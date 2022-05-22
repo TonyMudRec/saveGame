@@ -1,10 +1,8 @@
 package com.company;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class GameProgress implements Serializable {
@@ -45,6 +43,33 @@ public class GameProgress implements Serializable {
 
         }
     }
+
+    public static void openZip(String zipAdress, String adress) {
+        try (ZipInputStream zinp = new ZipInputStream(new FileInputStream(zipAdress));
+             FileOutputStream fos = new FileOutputStream(adress)) {
+            ZipEntry entry;
+            String name;
+            while ((entry = zinp.getNextEntry()) != null) {
+                name = entry.getName();
+                for (int c = zinp.read(); c != -1; c = zinp.read()) {
+                    fos.write(c);
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public static void openProgress(String adress, GameProgress gameProgress) {
+        try (FileInputStream fis = new FileInputStream(adress);
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
+            gameProgress = (GameProgress) ois.readObject();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        System.out.println(gameProgress);
+    }
+
 
     @Override
     public String toString() {

@@ -18,6 +18,9 @@ public class Main {
 
         GameProgress.zipFiles("C://Games//savegames//zip.zip","C://Games//savegames//save.dat");
 
+        GameProgress.openZip("C://Games//savegames//zip.zip", "C://Games//savegames");
+
+        GameProgress.openProgress("C://Games//savegames//save.dat", game3);
     }
 
 }
